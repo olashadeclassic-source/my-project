@@ -16,21 +16,21 @@ export function ChatMessage({ message, isStreaming, streamedContent }: ChatMessa
   const displayContent = isStreaming && streamedContent ? streamedContent : message.content;
 
   return (
-    <div className={`py-6 ${isUser ? 'bg-gray-800/50' : 'bg-gray-900'}`}>
-      <div className="max-w-4xl mx-auto px-4">
-        <div className="flex gap-4">
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+    <div className={`py-4 sm:py-6 ${isUser ? 'bg-gray-800/50' : 'bg-gray-900'}`}>
+      <div className="max-w-4xl mx-auto px-3 sm:px-4">
+        <div className="flex gap-3 sm:gap-4">
+          <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
             isUser ? 'bg-blue-600' : 'bg-green-600'
           }`}>
             {isUser ? (
-              <User className="w-4 h-4 text-white" />
+              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
             ) : (
-              <Bot className="w-4 h-4 text-white" />
+              <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
             )}
           </div>
           
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="font-medium text-gray-200">
                 {isUser ? 'You' : 'Roli'}
               </span>
@@ -47,7 +47,7 @@ export function ChatMessage({ message, isStreaming, streamedContent }: ChatMessa
 
             {/* Attachments */}
             {message.attachments && message.attachments.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3 mb-3">
                 {message.attachments.map((attachment) => (
                   <div
                     key={attachment.id}
@@ -61,7 +61,7 @@ export function ChatMessage({ message, isStreaming, streamedContent }: ChatMessa
                         <img
                           src={attachment.dataUrl}
                           alt={attachment.name}
-                          className="max-w-[200px] max-h-[200px] object-contain rounded"
+                          className="max-w-[160px] max-h-[160px] sm:max-w-[200px] sm:max-h-[200px] object-contain rounded"
                         />
                         <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           {attachment.name}
@@ -70,7 +70,7 @@ export function ChatMessage({ message, isStreaming, streamedContent }: ChatMessa
                     ) : (
                       <div className="flex items-center gap-2 px-2">
                         <FileText className="w-4 h-4 text-blue-400" />
-                        <span className="text-sm text-gray-300 truncate max-w-[150px]">
+                        <span className="text-sm text-gray-300 truncate max-w-[150px] sm:max-w-[180px]">
                           {attachment.name}
                         </span>
                       </div>

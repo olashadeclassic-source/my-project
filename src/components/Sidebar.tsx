@@ -21,6 +21,8 @@ interface SidebarProps {
   onDeleteThread: (id: string) => void;
   onTogglePin: (id: string) => void;
   onRenameThread: (id: string, title: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export function Sidebar({
@@ -31,6 +33,8 @@ export function Sidebar({
   onDeleteThread,
   onTogglePin,
   onRenameThread,
+  isOpen,
+  onClose,
 }: SidebarProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState('');
@@ -74,11 +78,26 @@ export function Sidebar({
   };
 
   return (
-    <div className="w-64 h-full bg-gray-900 text-gray-100 flex flex-col border-r border-gray-800">
+    <div
+      className={`fixed inset-y-0 left-0 z-40 flex h-full w-72 max-w-[85vw] flex-col border-r border-gray-800 bg-gray-900 text-gray-100 transition-transform duration-200 ease-out md:static md:w-64 md:translate-x-0 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
       <div className="p-4 border-b border-gray-800">
+        <div className="mb-4 flex items-center justify-between md:hidden">
+          <span className="text-sm font-semibold text-gray-200">Roli Chat</span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800"
+            aria-label="Close sidebar"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
         <button
           onClick={onCreateThread}
-          className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-lg transition-colors"
         >
           <Plus className="w-4 h-4" />
           New Chat

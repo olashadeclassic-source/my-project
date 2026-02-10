@@ -16,21 +16,21 @@ export function EmptyState({ onStartChat, onSendMessage }: EmptyStateProps) {
   ];
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-900">
+    <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 bg-gray-900">
       <div className="max-w-2xl w-full text-center">
-        <h1 className="text-4xl font-bold text-white mb-4">Welcome to Roli</h1>
-        <p className="text-gray-400 text-lg mb-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Welcome to Roli</h1>
+        <p className="text-gray-400 text-base sm:text-lg mb-6 sm:mb-8">
           Your AI assistant with web search, file uploads, and multi-chat history.
         </p>
 
         <button
           onClick={onStartChat}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-xl transition-colors mb-12"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 sm:px-8 rounded-xl transition-colors mb-8 sm:mb-12"
         >
           Start a new chat
         </button>
 
-        <div className="grid grid-cols-2 gap-4 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 sm:mb-12">
           <div className="bg-gray-800 p-4 rounded-lg text-left">
             <Search className="w-6 h-6 text-blue-400 mb-2" />
             <h3 className="text-white font-medium mb-1">Web Search</h3>
@@ -66,7 +66,7 @@ export function EmptyState({ onStartChat, onSendMessage }: EmptyStateProps) {
                     onStartChat();
                   }
                 }}
-                className="w-full text-left p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 transition-colors"
+                className="w-full text-left p-3 sm:p-4 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 text-sm sm:text-base transition-colors"
               >
                 {suggestion}
               </button>
