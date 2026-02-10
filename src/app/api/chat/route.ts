@@ -23,11 +23,27 @@ export async function POST(req: NextRequest) {
       const lastUserMessage = messages.filter((m: Message) => m.role === 'user').pop();
       if (lastUserMessage) {
         try {
-          const searchResponse = await fetch(
-            `https://s.jina.ai/${encodeURIComponent(lastUserMessage.content)}`
-          );
-          if (searchResponse.ok) {
-            searchContext = await searchResponse.text();
+          const apiKey = process.env.JINA_API_KEY;
+          if (!apiKey) {
+            console.error('JINA_API_KEY is not configured for search');
+          } else {
+            const searchResponse = await fetch(
+              `https://s.jina.ai/?q=${encodeURIComponent(lastUserMessage.content)}`,
+              {
+                headers: {
+                  'Accept': 'text/plain',
+                  'Authorization': `Bearer ${apiKey}`,
+                  'X-Token-Budget': '2000',
+                  'X-Engine': 'direct',
+                  'X-No-Cache': 'true',
+                },
+              }
+            );
+            if (searchResponse.ok) {
+              searchContext = await searchResponse.text();
+            } else {
+              console.error('Search API error:', searchResponse.status);
+            }
           }
         } catch (error) {
           console.error('Search error:', error);

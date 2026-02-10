@@ -24,8 +24,9 @@ Roli is a Next.js App Router application featuring streaming chat powered by Goo
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - A Google AI Studio API key (get one at https://aistudio.google.com/app/apikey)
+- A Jina AI API key (get one at https://jina.ai/api) - required for web search functionality
 
 ### Installation
 
@@ -43,9 +44,10 @@ npm install
 ```bash
 cp .env.local.example .env.local
 ```
-Edit `.env.local` and add your Gemini API key:
+Edit `.env.local` and add your API keys:
 ```
-GEMINI_API_KEY=your_actual_api_key_here
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+JINA_API_KEY=your_actual_jina_api_key_here
 ```
 
 4. Run the development server:
@@ -61,8 +63,10 @@ npm run dev
 
 1. Push the repository to GitHub or GitLab.
 2. Import the project into Vercel.
-3. Add the `GEMINI_API_KEY` environment variable in Vercel.
-4. Deploy and verify the streaming chat works as expected.
+3. Add the environment variables in Vercel:
+   - `GEMINI_API_KEY`
+   - `JINA_API_KEY`
+4. Deploy and verify the streaming chat and web search work as expected.
 
 For a full walkthrough (including Vercel CLI steps, troubleshooting, and custom domains), see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
