@@ -26,7 +26,7 @@ Roli is a Next.js App Router application featuring streaming chat powered by Goo
 
 - Node.js 18+
 - A Google AI Studio API key (get one at https://aistudio.google.com/app/apikey)
-- A Jina AI API key (get one at https://jina.ai/api) - required for web search functionality
+- A Jina AI API key (get one at https://jina.ai) - required for web search functionality
 
 ### Installation
 
@@ -44,7 +44,7 @@ npm install
 ```bash
 cp .env.local.example .env.local
 ```
-Edit `.env.local` and add your API keys:
+Edit `.env.local` and add your API keys (Jina is required for web search; get a key at https://jina.ai):
 ```
 GEMINI_API_KEY=your_actual_gemini_api_key_here
 JINA_API_KEY=your_actual_jina_api_key_here
