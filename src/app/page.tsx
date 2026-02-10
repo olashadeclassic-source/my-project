@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { ChatMessage } from '@/components/ChatMessage';
 import { ChatInput } from '@/components/ChatInput';
@@ -12,6 +13,7 @@ import { ChatThread, Attachment } from '@/types';
 export default function Home() {
   const [threads, setThreads] = useLocalStorage<ChatThread[]>('roli-threads', []);
   const [currentThreadId, setCurrentThreadId] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const {
     currentThread,
@@ -27,6 +29,20 @@ export default function Home() {
   const handleCreateThread = useCallback(() => {
     createThread();
   }, [createThread]);
+
+  useEffect(() => {
+    if (!isSidebarOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isSidebarOpen]);
 
   const handleSendMessageWithThread = useCallback(async (
     content: string, 
@@ -48,14 +64,42 @@ export default function Home() {
       <Sidebar
         threads={threads}
         currentThreadId={currentThreadId}
-        onSelectThread={setCurrentThreadId}
-        onCreateThread={handleCreateThread}
+        onSelectThread={(id) => {
+          setCurrentThreadId(id);
+          setIsSidebarOpen(false);
+        }}
+        onCreateThread={() => {
+          handleCreateThread();
+          setIsSidebarOpen(false);
+        }}
         onDeleteThread={deleteThread}
         onTogglePin={togglePinThread}
         onRenameThread={renameThread}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
+      {isSidebarOpen && (
+        <button
+          type="button"
+          onClick={() => setIsSidebarOpen(false)}
+          className="fixed inset-0 bg-black/60 z-30 md:hidden"
+          aria-label="Close sidebar"
+        />
+      )}
+
       <div className="flex-1 flex flex-col h-full overflow-hidden">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-800 md:hidden">
+          <button
+            type="button"
+            onClick={() => setIsSidebarOpen(true)}
+            className="flex h-11 w-11 items-center justify-center rounded-lg border border-gray-700 text-gray-200 hover:bg-gray-800"
+            aria-label="Open sidebar"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <span className="text-sm font-semibold text-gray-200">Roli Chat</span>
+        </div>
         {currentThread ? (
           <>
             <div className="flex-1 overflow-y-auto">
