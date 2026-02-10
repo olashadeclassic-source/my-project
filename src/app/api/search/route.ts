@@ -12,21 +12,36 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Use Jina AI search endpoint
-    const searchUrl = `https://s.jina.ai/${encodeURIComponent(query)}`;
-    
+    const apiKey = process.env.JINA_API_KEY;
+    if (!apiKey) {
+      console.error('JINA_API_KEY is not configured');
+      return NextResponse.json(
+        { error: 'Search service is not configured' },
+        { status: 500 }
+      );
+    }
+
+    // Use Jina AI search endpoint with query parameter format
+    const searchUrl = `https://s.jina.ai/?q=${encodeURIComponent(query)}`;
+
     const response = await fetch(searchUrl, {
       headers: {
         'Accept': 'text/plain',
+        'Authorization': `Bearer ${apiKey}`,
+        'X-Token-Budget': '2000',
+        'X-Engine': 'direct',
+        'X-No-Cache': 'true',
       },
     });
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Jina search error:', response.status, errorText);
       throw new Error(`Search failed: ${response.status}`);
     }
 
     const text = await response.text();
-    
+
     return NextResponse.json({
       query,
       results: text,
@@ -51,21 +66,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const apiKey = process.env.JINA_API_KEY;
+    if (!apiKey) {
+      console.error('JINA_API_KEY is not configured');
+      return NextResponse.json(
+        { error: 'Reader service is not configured' },
+        { status: 500 }
+      );
+    }
+
     // Use Jina AI reader endpoint
     const readerUrl = `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`;
-    
+
     const response = await fetch(readerUrl, {
       headers: {
         'Accept': 'text/plain',
+        'Authorization': `Bearer ${apiKey}`,
+        'X-Token-Budget': '2000',
+        'X-Engine': 'direct',
+        'X-No-Cache': 'true',
       },
     });
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.error('Jina reader error:', response.status, errorText);
       throw new Error(`Reader failed: ${response.status}`);
     }
 
     const text = await response.text();
-    
+
     return NextResponse.json({
       url,
       content: text,
