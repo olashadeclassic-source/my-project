@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { Send, Paperclip, X, Globe, Image as ImageIcon, FileText } from 'lucide-react';
+import { Send, Paperclip, X, Globe, FileText } from 'lucide-react';
 import { Attachment } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -66,22 +66,39 @@ export function ChatInput({ onSendMessage, isStreaming }: ChatInputProps) {
           {attachments.map((attachment) => (
             <div
               key={attachment.id}
-              className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2"
+              className={`bg-gray-800 border border-gray-700 rounded-lg overflow-hidden ${
+                attachment.type === 'image' ? 'p-0 relative group' : 'flex items-center gap-2 px-3 py-2'
+              }`}
             >
               {attachment.type === 'image' ? (
-                <ImageIcon className="w-4 h-4 text-blue-400" />
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={attachment.dataUrl}
+                    alt={attachment.name}
+                    className="w-16 h-16 object-cover"
+                  />
+                  <button
+                    onClick={() => removeAttachment(attachment.id)}
+                    className="absolute top-0 right-0 p-1 bg-red-500/80 hover:bg-red-600 text-white rounded-bl opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </>
               ) : (
-                <FileText className="w-4 h-4 text-green-400" />
+                <>
+                  <FileText className="w-4 h-4 text-green-400 flex-shrink-0" />
+                  <span className="text-sm text-gray-300 truncate max-w-[150px]">
+                    {attachment.name}
+                  </span>
+                  <button
+                    onClick={() => removeAttachment(attachment.id)}
+                    className="p-1 hover:bg-gray-700 rounded flex-shrink-0"
+                  >
+                    <X className="w-3 h-3 text-gray-500" />
+                  </button>
+                </>
               )}
-              <span className="text-sm text-gray-300 truncate max-w-[150px]">
-                {attachment.name}
-              </span>
-              <button
-                onClick={() => removeAttachment(attachment.id)}
-                className="p-1 hover:bg-gray-700 rounded"
-              >
-                <X className="w-3 h-3 text-gray-500" />
-              </button>
             </div>
           ))}
         </div>

@@ -4,9 +4,10 @@ import { MessageSquare, Search, Image as ImageIcon, Pin } from 'lucide-react';
 
 interface EmptyStateProps {
   onStartChat: () => void;
+  onSendMessage?: (message: string) => void;
 }
 
-export function EmptyState({ onStartChat }: EmptyStateProps) {
+export function EmptyState({ onStartChat, onSendMessage }: EmptyStateProps) {
   const suggestions = [
     'Explain quantum computing in simple terms',
     'Write a Python function to sort a list',
@@ -58,7 +59,13 @@ export function EmptyState({ onStartChat }: EmptyStateProps) {
             {suggestions.map((suggestion, index) => (
               <button
                 key={index}
-                onClick={() => onStartChat()}
+                onClick={() => {
+                  if (onSendMessage) {
+                    onSendMessage(suggestion);
+                  } else {
+                    onStartChat();
+                  }
+                }}
                 className="w-full text-left p-3 bg-gray-800 hover:bg-gray-700 rounded-lg text-gray-300 transition-colors"
               >
                 {suggestion}

@@ -24,7 +24,7 @@ export function useChat(
     };
     setThreads(prev => [newThread, ...prev]);
     setCurrentThreadId(newThread.id);
-    return newThread.id;
+    return newThread;
   }, [setThreads, setCurrentThreadId]);
 
   const deleteThread = useCallback((threadId: string) => {
@@ -53,9 +53,14 @@ export function useChat(
     useSearch: boolean = false
   ) => {
     let threadId = currentThreadId;
+    let currentMessages: Message[] = [];
     
     if (!threadId) {
-      threadId = createThread();
+      const newThread = createThread();
+      threadId = newThread.id;
+      currentMessages = [];
+    } else {
+      currentMessages = threads.find(t => t.id === threadId)?.messages || [];
     }
 
     const userMessage: Message = {
@@ -85,7 +90,7 @@ export function useChat(
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...(threads.find(t => t.id === threadId)?.messages || []), userMessage],
+          messages: [...currentMessages, userMessage],
           useSearch,
         }),
       });

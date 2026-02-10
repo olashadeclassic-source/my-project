@@ -51,16 +51,21 @@ export function ChatMessage({ message, isStreaming, streamedContent }: ChatMessa
                 {message.attachments.map((attachment) => (
                   <div
                     key={attachment.id}
-                    className="flex items-center gap-2 bg-gray-800 border border-gray-700 rounded-lg p-2"
+                    className={`bg-gray-800 border border-gray-700 rounded-lg overflow-hidden ${
+                      attachment.type === 'image' ? 'p-0' : 'p-2'
+                    }`}
                   >
                     {attachment.type === 'image' ? (
-                      <div className="relative">
+                      <div className="relative group">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={attachment.dataUrl}
                           alt={attachment.name}
-                          className="w-20 h-20 object-cover rounded"
+                          className="max-w-[200px] max-h-[200px] object-contain rounded"
                         />
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {attachment.name}
+                        </div>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 px-2">
