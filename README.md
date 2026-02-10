@@ -55,6 +55,17 @@ npm run dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-org/roli)
+
+1. Push the repository to GitHub or GitLab.
+2. Import the project into Vercel.
+3. Add the `GEMINI_API_KEY` environment variable in Vercel.
+4. Deploy and verify the streaming chat works as expected.
+
+For a full walkthrough (including Vercel CLI steps, troubleshooting, and custom domains), see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## Usage
 
 ### Starting a Chat
