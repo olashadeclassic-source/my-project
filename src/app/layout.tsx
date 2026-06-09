@@ -7,8 +7,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Roli - AI Chat",
-  description: "AI chat with web search, file uploads, and multi-chat history",
+  title: "PageTurner Pages - High-Converting Landing Pages for Authors",
+  description: "Beautiful, high-converting book landing pages for indie authors and publishers. Get a professional sales page for your book in days.",
 };
 
 export default function RootLayout({
